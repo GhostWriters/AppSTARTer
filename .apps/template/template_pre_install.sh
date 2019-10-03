@@ -2,7 +2,7 @@
 set -euo pipefail
 IFS=$'\n\t'
 
-template_pre_install()
-{
+template_pre_install() {
     # Put pre-install code here
+    info "Pre-install template"
 }

@@ -2,7 +2,7 @@
 set -euo pipefail
 IFS=$'\n\t'
 
-template_post_install()
-{
+template_post_install() {
     # Put post-install code here
+    info "Post-install template"
 }
