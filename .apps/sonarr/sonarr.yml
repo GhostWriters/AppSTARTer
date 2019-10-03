@@ -1,0 +1,16 @@
+services:
+  sonarr:
+    labels:
+      com.appstarter.appinfo.description: "Smart TV show PVR via Usenet and BitTorrent"
+      com.appstarter.appinfo.nicename: "Sonarr"
+      com.appstarter.appvars.sonarr_backup_config: "true"
+      com.appstarter.appvars.sonarr_enabled: "false"
+      com.appstarter.appvars.sonarr_port_8989: "8989"
+      com.appstarter.appinstall:
+        method: "package"
+        apt_name: "nzbdrone"
+        app_path: "/opt/NzbDrone"
+        apt_repo: "deb http://apt.sonarr.tv/ master main"
+        apt_key: "0xA236C58F409091A18ACA53CBEBFF6B99D9B78493"
+        dependencies:
+          - "Mono"

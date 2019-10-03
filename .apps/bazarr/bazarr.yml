@@ -1,0 +1,14 @@
+services:
+  bazarr:
+    labels:
+      com.appstarter.appinfo.description: "Companion to Sonarr to manage and download subtitles"
+      com.appstarter.appinfo.nicename: "Bazarr"
+      com.appstarter.appvars.bazarr_backup_config: "true"
+      com.appstarter.appvars.bazarr_enabled: "false"
+      com.appstarter.appvars.bazarr_port_6767: "6767"
+      com.appstarter.appinstall:
+        method: "built-in"
+        app_path: true
+        dependencies:
+          - "Python"
+          - "python-pip"

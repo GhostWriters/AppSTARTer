@@ -1,0 +1,13 @@
+services:
+  lidarr:
+    labels:
+      com.appstarter.appinfo.description: "Music download manager for Usenet and BitTorrent users"
+      com.appstarter.appinfo.nicename: "Lidarr"
+      com.appstarter.appvars.lidarr_backup_config: "true"
+      com.appstarter.appvars.lidarr_enabled: "false"
+      com.appstarter.appvars.lidarr_port_8686: "8686"
+      com.appstarter.appinstall:
+        method: "built-in"
+        app_path: true
+        dependencies:
+          - "Mono"

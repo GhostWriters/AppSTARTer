@@ -1,0 +1,11 @@
+services:
+  mono:
+    labels:
+      com.appstarter.appinfo.description: ""
+      com.appstarter.appinfo.nicename: "Mono"
+      com.appstarter.appinfo.nolist: true
+      com.appstarter.appinstall:
+        method: "package"
+        apt_name: "mono-devel"
+        apt_repo: "deb https://download.mono-project.com/repo/ubuntu stable-bionic main"
+        apt_key: "3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF"
