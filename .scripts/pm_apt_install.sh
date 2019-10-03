@@ -11,9 +11,9 @@ pm_apt_install() {
         local SOURCE_FILE="/etc/apt/sources.list.d/${APPNAME,,}.list"
         local SOURCE_REPO
         SOURCE_REPO=$(run_script 'yml_get' "${APPNAME}" "services.${FILENAME}.labels[com.appstarter.appinstall].apt_repo" || true)
-        if [[ "${SOURCE_FILE}" != "" && "${SOURCE_REPO}" != "" ]]; then
+        if [[ ${SOURCE_FILE} != "" && ${SOURCE_REPO} != "" ]]; then
             info "Adding/updating sources for ${APPNAME}"
-            if [[ -f "${SOURCE_FILE}" ]]; then
+            if [[ -f ${SOURCE_FILE} ]]; then
                 rm "${SOURCE_FILE}"
             fi
             echo "${SOURCE_REPO}" | tee "${SOURCE_FILE}" > /dev/null
@@ -21,7 +21,7 @@ pm_apt_install() {
 
         local SOURCE_KEY
         SOURCE_KEY=$(run_script 'yml_get' "${APPNAME}" "services.${FILENAME}.labels[com.appstarter.appinstall].apt_key" || true)
-        if [[ "${SOURCE_KEY}" != "" ]]; then
+        if [[ ${SOURCE_KEY} != "" ]]; then
             info "Adding/updating source key for ${APPNAME}"
             gpg --list-keys "${SOURCE_KEY}" > /dev/null 2>&1 || apt-key adv --keyserver keyserver.ubuntu.com --recv-keys "${SOURCE_KEY}" > /dev/null 2>&1
         fi

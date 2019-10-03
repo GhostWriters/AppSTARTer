@@ -3,6 +3,7 @@ set -euo pipefail
 IFS=$'\n\t'
 
 readonly APPLICATION_NAME="AppSTARTer"
+#shellcheck disable=SC2034
 readonly APPLICATION_SHORT_NAME="AS"
 readonly APPLICATION_COMMAND="apps"
 readonly APPLICATION_REPO_URL="https://github.com/MagicalCodeMonkey/AppSTARTer.git"

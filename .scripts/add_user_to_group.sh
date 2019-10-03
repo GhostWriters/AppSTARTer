@@ -6,7 +6,7 @@ add_user_to_group() {
     local USER="${1:-}"
     local GROUP="${2:-}"
 
-    if groups "${USER}" | grep &>/dev/null "\b${GROUP}\b"; then
+    if groups "${USER}" | grep &> /dev/null "\b${GROUP}\b"; then
         info "User '${USER}' is already part of the '${GROUP}' group!"
     else
         if [[ ! $(getent group "${GROUP}") ]]; then

@@ -8,6 +8,7 @@ yml_get() {
     local FILENAME=${APPNAME,,}
     run_script 'install_yq'
     local YML_COUNT
+    #shellcheck disable=SC2012
     YML_COUNT=$(ls -1q "${SCRIPTPATH}/.apps/${FILENAME}/"*.yml | wc -l)
     if [[ ${YML_COUNT} == 1 ]]; then
         /usr/local/bin/yq-go r "${SCRIPTPATH}/.apps/${FILENAME}/${FILENAME}.yml" "${GET_VAR}" 2> /dev/null | grep -v '^null$' || return 1

@@ -2,11 +2,10 @@
 set -euo pipefail
 IFS=$'\n\t'
 
-qbittorrent_post_install()
-{
+qbittorrent_post_install() {
     local CONFIG_PATH="${DETECTED_HOMEDIR}/.config/${APPNAME}"
     local CONFIG_FILE="${CONFIG_PATH}/qBittorrent.conf"
-    if [[ ! -d "${CONFIG_PATH}" ]]; then
+    if [[ ! -d ${CONFIG_PATH} ]]; then
         mkdir -p "${CONFIG_PATH}"
         touch "${CONFIG_FILE}"
         echo "[LegalNotice]" >> "${CONFIG_FILE}"

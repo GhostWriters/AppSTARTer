@@ -2,11 +2,8 @@
 set -euo pipefail
 IFS=$'\n\t'
 
-mylar_install()
-{
-    local APPNAME="${1:-}"
-
-    if [[ ! -d "${APP_PATH}" ]]; then
+mylar_install() {
+    if [[ ! -d ${APP_PATH} ]]; then
         info "Installing ${APPNAME} to ${APP_PATH}"
         git clone https://github.com/evilhero/mylar "${APP_PATH}" > /dev/null 2>&1 || fatal "Failed to clone ${APPNAME} from git."
     else

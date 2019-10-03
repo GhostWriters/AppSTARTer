@@ -2,14 +2,7 @@
 set -euo pipefail
 IFS=$'\n\t'
 
-mylar_post_install()
-{
-    local APPNAME="${1:-}"
-    local APP_USER="${APPNAME,,}"
-    local APP_UID=$(id -u "${APP_USER}")
-    local APP_GID=$(id -g "${APP_USER}")
-    local SERVICE_NAME="${APPNAME,,}"
-
+mylar_post_install() {
     local MYLAR_SCRIPT_DEFAULT="/etc/default/${SERVICE_NAME}"
     info "Copying mylar.default to '${MYLAR_SCRIPT_DEFAULT}'"
     cp "${SCRIPTPATH}/.apps/${SERVICE_NAME}/${SERVICE_NAME}.default" "${MYLAR_SCRIPT_DEFAULT}"

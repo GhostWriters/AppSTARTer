@@ -2,8 +2,7 @@
 set -euo pipefail
 IFS=$'\n\t'
 
-install_app()
-{
+install_app() {
     local APPNAME="${1:-}"
     local APP_USER="${APPNAME,,}"
     local APPDEPENDENCYOF="${2:-}"
@@ -11,6 +10,10 @@ install_app()
     local RUN_PRE_INSTALL=1
     local RUN_POST_INSTALL=0
     local APPDEPENDENCY=0
+    local APP_UID
+    APP_UID=$(id -u "${APP_USER}")
+    local APP_GID
+    APP_GID=$(id -g "${APP_USER}")
 
     if [[ ${APPDEPENDENCYOF} == "" ]]; then
         notice "Installing ${APPNAME}"
@@ -30,7 +33,7 @@ install_app()
         if [[ ${APP_PATH} == "true" ]]; then
             APP_PATH="/opt/${APPNAME}"
         else
-             APP_PATH="${APP_PATH%%+(/)}"
+            APP_PATH="${APP_PATH%%+(/)}"
         fi
 
         local INSTALL_METHOD
@@ -44,18 +47,20 @@ install_app()
             fi
             if [[ -f "${SCRIPTPATH}/.apps/${FILENAME}/${FILENAME}_pre_install.sh" ]]; then
                 info "Running additional ${APPNAME} pre-install script before ${APPNAME} install"
+                # shellcheck source=/dev/null
                 source "${SCRIPTPATH}/.apps/${FILENAME}/${FILENAME}_pre_install.sh"
-                ${FILENAME}_pre_install "${APPNAME}"
+                "${FILENAME}_pre_install" "${APPNAME}"
             fi
         fi
         cd "${SCRIPTPATH}" || fatal "Failed to change to ${SCRIPTPATH} directory."
 
-        if [[ ${INSTALL_METHOD} == "package" || ${INSTALL_METHOD} == "package-manager"|| ${INSTALL_METHOD} == "package manager" || ${INSTALL_METHOD} == "pm" ]]; then
+        if [[ ${INSTALL_METHOD} == "package" || ${INSTALL_METHOD} == "package-manager" || ${INSTALL_METHOD} == "package manager" || ${INSTALL_METHOD} == "pm" ]]; then
             if run_script 'package_manager_run' "install" "${APPNAME}"; then
                 RUN_POST_INSTALL=1
             fi
         elif [[ ${INSTALL_METHOD} == "built-in" || ${INSTALL_METHOD} == "custom" || ${INSTALL_METHOD} == "" ]]; then
             if [[ -f "${SCRIPTPATH}/.apps/${FILENAME}/${FILENAME}_install.sh" ]]; then
+                # shellcheck source=/dev/null
                 source "${SCRIPTPATH}/.apps/${FILENAME}/${FILENAME}_install.sh"
                 if "${FILENAME}_install" "${APPNAME}"; then
                     RUN_POST_INSTALL=1
@@ -76,8 +81,6 @@ install_app()
             if [[ ${APPDEPENDENCY} == 0 ]]; then
                 info "Running general post-install after successful ${APPNAME} install"
                 if [[ ${APP_PATH} != "" ]]; then
-                    local APP_UID=$(id -u "${APP_USER}")
-                    local APP_GID=$(id -g "${APP_USER}")
                     run_script 'set_permissions' "${APP_PATH}" "${APP_UID}" "${APP_GID}"
                     #chmod -R 770 "${APP_PATH}"
                     #chown -R "${APP_USER}":"${APP_USER}" "${APP_PATH}"
@@ -88,8 +91,9 @@ install_app()
 
             if [[ -f "${SCRIPTPATH}/.apps/${FILENAME}/${FILENAME}_post_install.sh" ]]; then
                 info "Running additional ${APPNAME} post install script after successful ${APPNAME} install"
+                # shellcheck source=/dev/null
                 source "${SCRIPTPATH}/.apps/${FILENAME}/${FILENAME}_post_install.sh"
-                ${FILENAME}_post_install "${APPNAME}"
+                "${FILENAME}_post_install" "${APPNAME}"
             fi
 
             if [[ ${APPDEPENDENCY} == 0 ]]; then
