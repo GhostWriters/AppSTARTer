@@ -17,3 +17,7 @@ add_user_to_group() {
         usermod -a -G "${GROUP}" "${USER}" > /dev/null 2>&1 || warn "Unable to add '${USER}' user to '${GROUP}' group"
     fi
 }
+
+test_add_user_to_group() {
+    warn "CI does not test add_user_to_group."
+}

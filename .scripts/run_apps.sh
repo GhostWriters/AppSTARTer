@@ -10,3 +10,7 @@ run_apps() {
         run_script "install_app" "${APPNICENAME}"
     done < <(grep '_ENABLED=true$' < "${SCRIPTPATH}/.data/.env")
 }
+
+test_run_apps() {
+    warn "CI does not test run_apps."
+}

@@ -26,3 +26,7 @@ create_service() {
         error "Unable to create ${APPNAME} service. systemctl does not exist."
     fi
 }
+
+test_create_service() {
+    warn "CI does not test create_service."
+}

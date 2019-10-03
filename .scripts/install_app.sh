@@ -103,3 +103,7 @@ install_app()
         error "No app name provided."
     fi
 }
+
+test_install_app() {
+    warn "CI does not test install_app."
+}
