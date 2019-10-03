@@ -12,7 +12,7 @@ services:
       com.appstarter.appvars.{APP_NAME}_port_{APP_PORT}: "{APP_PORT}" # Multiple ports supported as seperate entries
       # Application install information
       com.appstarter.appinstall:
-        # How to install the application: package, built-in, custom
+        # How to install the application: package, custom
         method: "package"
         # APT package manager options
         apt_name: ""
@@ -24,5 +24,6 @@ services:
         # blank or empty "" - will do nothing; everything using APP_PATH will be skipped.
         app_path: ""
         # Dependencies to install. Note: circular dependencies are not detected and will cause issues...
+        # Dependencies also need their own file to be referenced for install
         dependencies:
           - "Mono"
