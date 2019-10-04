@@ -4,6 +4,10 @@ IFS=$'\n\t'
 
 pm_apt_install() {
     local APPNAME=${1:-}
+    local REDIRECT="> /dev/null 2>&1"
+    if [[ ${CI:-} == true ]]; then
+        REDIRECT="> /dev/null"
+    fi
     if [[ ${APPNAME} != "" ]]; then
         notice "Installing or updating ${APPNAME} via apt"
         local APP_PACKAGE
@@ -31,7 +35,7 @@ pm_apt_install() {
         run_script 'package_manager_run' clean
     else
         info "Installing dependencies."
-        apt-get -y install apt-transport-https curl git gpg grep sed whiptail > /dev/null 2>&1 || fatal "Failed to install dependencies from apt."
+        eval apt-get -y install apt-transport-https curl git gpg grep sed whiptail "${REDIRECT}" || fatal "Failed to install dependencies from apt."
     fi
 }
 
