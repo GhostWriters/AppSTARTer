@@ -35,7 +35,7 @@ pm_apt_install() {
         run_script 'package_manager_run' clean
     else
         info "Installing dependencies."
-        eval apt-get -y install apt-transport-https curl git gpg grep sed whiptail "${REDIRECT}" || fatal "Failed to install dependencies from apt."
+        eval apt-get -y install apt-transport-https curl git gnupg2 grep sed whiptail "${REDIRECT}" || fatal "Failed to install dependencies from apt."
     fi
 }
 
