@@ -278,5 +278,5 @@ backup_create() {
 
 test_backup_create() {
     run_script 'env_update'
-    run_script 'backup_create' ".compose.backups"
+    run_script 'backup_create' ".${APPLICATION_NAME_CLEAN}.backups"
 }
