@@ -1,0 +1,12 @@
+[Unit]
+Description=qBittorrent Daemon Service
+After=network.target
+
+[Service]
+User=qbittorrent
+Group=qbittorrent
+ExecStart=/usr/bin/qbittorrent-nox #TODO: Change this to /opt/
+ExecStop=/usr/bin/killall -w qbittorrent-nox
+
+[Install]
+WantedBy=multi-user.target

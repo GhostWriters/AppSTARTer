@@ -1,0 +1,14 @@
+services:
+  qbittorrent:
+    labels:
+      com.appstarter.appinfo.description: "Cross-platform free and open-source BitTorrent client"
+      com.appstarter.appinfo.nicename: "qBittorrent"
+      com.appstarter.appvars.qbittorrent_backup_config: "true"
+      com.appstarter.appvars.qbittorrent_enabled: "false"
+      com.appstarter.appvars.qbittorrent_port_51413: "51413"
+      com.appstarter.appvars.qbittorrent_port_6881: "6881"
+      com.appstarter.appvars.qbittorrent_port_8080: "8080"
+      com.appstarter.appinstall:
+        method: "package"
+        ppa: "qbittorrent-team/qbittorrent-stable"
+        apt_name: "qbittorrent-nox"

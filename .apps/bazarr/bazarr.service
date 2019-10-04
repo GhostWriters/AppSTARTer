@@ -1,0 +1,20 @@
+[Unit]
+Description=Bazarr Daemon
+After=syslog.target network.target
+
+[Service]
+User=bazarr
+Group=bazarr
+
+Type=simple
+ExecStart=/usr/bin/python /opt/Bazarr/bazarr.py
+TimeoutStopSec=20
+Restart=on-failure
+
+RestartSec=5
+WorkingDirectory=/opt/Bazarr/
+KillSignal=SIGINT
+SyslogIdentifier=bazarr
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,16 @@
+[Unit]
+Description=Lidarr Daemon
+After=syslog.target network.target
+
+[Service]
+User=lidarr
+Group=lidarr
+
+Type=simple
+ExecStart=/usr/bin/mono /opt/Lidarr/Lidarr.exe -nobrowser
+TimeoutStopSec=20
+KillMode=process
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

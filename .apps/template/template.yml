@@ -1,0 +1,29 @@
+# {APP_NAME} should be the name of this application, all lowercase
+services:
+  {APP_NAME}:
+    labels:
+      # Application info for display purposes
+      com.appstarter.appinfo.description: "" # Optional, but will show missing description message in some places.
+      com.appstarter.appinfo.nicename: "" # Required
+      com.appstarter.appinfo.nolist: true # Don't list as an installable application. Used for dependencies.
+      # Default application variables for setting through the script
+      com.appstarter.appvars.{APP_NAME}_backup_config: "true"
+      com.appstarter.appvars.{APP_NAME}_enabled: "false"
+      com.appstarter.appvars.{APP_NAME}_port_{APP_PORT}: "{APP_PORT}" # Multiple ports supported as seperate entries
+      # Application install information
+      com.appstarter.appinstall:
+        # How to install the application: package, custom
+        method: "package"
+        # APT package manager options
+        apt_name: ""
+        apt_repo: ""
+        apt_key: ""
+        # Application path information:
+        # - true - will generate the path based on APP_NAME: /opt/APP_NAME
+        # - '/path/to/app' - will use whatever is set here. Case matters.
+        # blank or empty "" - will do nothing; everything using APP_PATH will be skipped.
+        app_path: ""
+        # Dependencies to install. Note: circular dependencies are not detected and will cause issues...
+        # Dependencies also need their own file to be referenced for install
+        dependencies:
+          - "Mono"

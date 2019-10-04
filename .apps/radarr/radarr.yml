@@ -1,0 +1,14 @@
+services:
+  radarr:
+    labels:
+      com.appstarter.appinfo.description: "Automatically download movies via Usenet and BitTorrent"
+      com.appstarter.appinfo.nicename: "Radarr"
+      com.appstarter.appvars.radarr_backup_config: "true"
+      com.appstarter.appvars.radarr_enabled: "false"
+      com.appstarter.appvars.radarr_port_7878: "7878"
+      com.appstarter.appinstall:
+        method: "built-in"
+        app_path: "/opt/Radarr/"
+        dependencies:
+          - "Mono"
+          - "mediainfo"

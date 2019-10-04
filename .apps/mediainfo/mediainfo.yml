@@ -1,0 +1,9 @@
+services:
+  mediainfo:
+    labels:
+      com.appstarter.appinfo.description: ""
+      com.appstarter.appinfo.nicename: "mediainfo"
+      com.appstarter.appinfo.nolist: true
+      com.appstarter.appinstall:
+        method: "package"
+        apt_name: "mediainfo"

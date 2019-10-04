@@ -1,0 +1,14 @@
+services:
+  mylar:
+    labels:
+      com.appstarter.appinfo.description: "Comic book PVR client"
+      com.appstarter.appinfo.nicename: "Mylar"
+      com.appstarter.appvars.mylar_backup_config: "true"
+      com.appstarter.appvars.mylar_enabled: "false"
+      com.appstarter.appvars.mylar_port_8090: "8090"
+      com.appstarter.appinstall:
+        method: "built-in"
+        app_path: true
+        dependencies:
+          - "Python"
+          - "Python-cherrypy"
