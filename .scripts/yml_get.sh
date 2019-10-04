@@ -18,5 +18,5 @@ yml_get() {
 }
 
 test_yml_get() {
-    run_script 'yml_get' PORTAINER "services.portainer.labels[com.appstarter.appinfo.nicename]"
+    run_script 'yml_get' BAZARR "services.bazarr.labels[com.appstarter.appinfo.nicename]"
 }

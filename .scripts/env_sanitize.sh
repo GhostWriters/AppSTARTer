@@ -52,9 +52,7 @@ env_sanitize() {
 }
 
 test_env_sanitize() {
-    run_script 'appvars_create' OUROBOROS
-    run_script 'appvars_create' WATCHTOWER
+    run_script 'appvars_create' BAZARR
     run_script 'env_sanitize'
-    run_script 'appvars_purge' PORTAINER
-    run_script 'appvars_purge' WATCHTOWER
+    run_script 'appvars_purge' BAZARR
 }

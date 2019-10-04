@@ -31,6 +31,6 @@ appvars_purge() {
 
 test_appvars_purge() {
     run_script 'env_update'
-    run_script 'appvars_purge' PORTAINER
+    run_script 'appvars_purge' BAZARR
     cat "${SCRIPTPATH}/.data/.env"
 }
