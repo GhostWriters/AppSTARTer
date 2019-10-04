@@ -19,7 +19,7 @@ backup_max() {
             local BACKUP_CMD_PRE_APP
             BACKUP_CMD_PRE_APP=$(run_script 'env_get' BACKUP_CMD_PRE_APP)
             eval "${BACKUP_CMD_PRE_APP}" || error "Failed to execute BACKUP_CMD_PRE_APP."
-            local RUNNING
+            # local RUNNING
             # RUNNING=$(docker inspect "${FILENAME}" 2> /dev/null | grep -Po '"Running": \Ktrue' || echo "false")
             # if [[ ${RUNNING} == true ]]; then
             #     info "Stopping ${FILENAME} container."
