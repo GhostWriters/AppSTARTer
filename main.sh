@@ -68,7 +68,7 @@ cmdline() {
     #Reset the positional parameters to the short options
     eval set -- "${LOCAL_ARGS:-}"
 
-    while getopts "hit:u:vx" OPTION; do
+    while getopts ":hit:u:vx" OPTION; do
         case ${OPTION} in
             h)
                 usage
