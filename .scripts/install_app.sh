@@ -11,9 +11,7 @@ install_app() {
     local RUN_POST_INSTALL=0
     local APPDEPENDENCY=0
     local APP_UID
-    APP_UID=$(id -u "${APP_USER}")
     local APP_GID
-    APP_GID=$(id -g "${APP_USER}")
 
     if [[ ${APPDEPENDENCYOF} == "" ]]; then
         notice "Installing ${APPNAME}"
@@ -44,6 +42,8 @@ install_app() {
             if [[ ${APPDEPENDENCY} == 0 ]]; then
                 info "Running general pre-install"
                 run_script 'create_app_user' "${APP_USER}"
+                APP_UID=$(id -u "${APP_USER}")
+                APP_GID=$(id -g "${APP_USER}")
             fi
             if [[ -f "${SCRIPTPATH}/.apps/${FILENAME}/${FILENAME}_pre_install.sh" ]]; then
                 info "Running additional ${APPNAME} pre-install script before ${APPNAME} install"
