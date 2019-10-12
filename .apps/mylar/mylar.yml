@@ -9,6 +9,9 @@ services:
       com.appstarter.appinstall:
         method: "built-in"
         app_path: true
+        config_path:
+          - "config.ini"
+          - "mylar.db"
         dependencies:
           - "Python"
           - "Python-cherrypy"
