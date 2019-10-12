@@ -9,6 +9,7 @@ services:
       com.appstarter.appinstall:
         method: "built-in"
         app_path: "/opt/Radarr/"
+        config_path: "/home/radarr/.config/Radarr"
         dependencies:
           - "Mono"
           - "mediainfo"

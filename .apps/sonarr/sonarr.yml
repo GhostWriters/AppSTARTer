@@ -10,6 +10,7 @@ services:
         method: "package"
         apt_name: "nzbdrone"
         app_path: "/opt/NzbDrone"
+        config_path: "/home/sonarr/.config/NzbDrone"
         apt_repo: "deb http://apt.sonarr.tv/ master main"
         apt_key: "0xA236C58F409091A18ACA53CBEBFF6B99D9B78493"
         dependencies:
