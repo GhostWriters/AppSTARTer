@@ -23,6 +23,16 @@ services:
         # - '/path/to/app' - will use whatever is set here. Case matters.
         # blank or empty "" - will do nothing; everything using APP_PATH will be skipped.
         app_path: ""
+        # Application config location
+        # - Start with / for an absolute path otherwise it will be relative to the app_path
+        #   config_path: "data" => /opt/APP_NAME/data
+        #   config_path: "/path/to/config/data" => /path/to/config/data
+        # - If there are multiple directories or the config files aren't in a folder,
+        #   use this method to list the config files that need to be linked.
+        #   config_path:
+        #   - "data"
+        #   - "/path/to/config/file.config"
+        config_path: ""
         # Dependencies to install. Note: circular dependencies are not detected and will cause issues...
         # Dependencies also need their own file to be referenced for install
         dependencies:
