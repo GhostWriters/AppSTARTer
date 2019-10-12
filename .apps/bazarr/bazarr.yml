@@ -12,3 +12,4 @@ services:
         dependencies:
           - "Python"
           - "python-pip"
+          - "libxslt-dev"
