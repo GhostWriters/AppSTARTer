@@ -130,7 +130,7 @@ install_app() {
                                 CONFIG_PATHS_LINKED="true"
                             elif [[ ${CONFIG_PATH_IS_LINK} == "true" ]]; then
                                 info "Removing existing link: ${APP_CONFIG_PATH} => $(readlink -f "${APP_CONFIG_PATH}")"
-                                rm ${APP_CONFIG_PATH}
+                                rm "${APP_CONFIG_PATH}"
                             fi
                         fi
                         info "APP_CONFIG_PATH=${APP_CONFIG_PATH}"
