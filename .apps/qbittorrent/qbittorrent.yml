@@ -11,5 +11,7 @@ services:
       com.appstarter.appinstall:
         method: "package"
         app_path: false
-        ppa: "qbittorrent-team/qbittorrent-stable"
-        apt_name: "qbittorrent-nox"
+        apt:
+          general:
+            name: "qbittorrent-nox"
+            repo: "ppa:qbittorrent-team/qbittorrent-stable"

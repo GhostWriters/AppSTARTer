@@ -11,4 +11,5 @@ services:
         app_path: true
         config_path: "/home/lidarr/.config/Lidarr"
         dependencies:
-          - "Mono"
+          general:
+            - "Mono"

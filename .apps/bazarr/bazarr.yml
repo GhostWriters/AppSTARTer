@@ -11,6 +11,8 @@ services:
         app_path: true
         config_path: "data"
         dependencies:
-          - "Python"
-          - "python-pip"
-          - "libxslt-dev"
+          general:
+            - "Python"
+            - "python-pip"
+          raspbian:
+            - "libxslt-dev"

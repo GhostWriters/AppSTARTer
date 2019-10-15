@@ -11,5 +11,6 @@ services:
         app_path: "/opt/Radarr/"
         config_path: "/home/radarr/.config/Radarr"
         dependencies:
-          - "Mono"
-          - "mediainfo"
+          general:
+            - "Mono"
+            - "mediainfo"

@@ -27,7 +27,10 @@ install_app() {
     # Dependencies
     while IFS= read -r line; do
         run_script 'install_app' "${line}" "${APPNAME}"
-    done < <(run_script 'yml_get' "${APPNAME}" "services.${FILENAME}.labels[com.appstarter.appinstall].dependencies" | awk '{ gsub("- ", ""); print}' || true)
+    done < <(run_script 'yml_get' "${APPNAME}" "services.${FILENAME}.labels[com.appstarter.appinstall].dependencies.general" | awk '{ gsub("- ", ""); print}' || true)
+    while IFS= read -r line; do
+        run_script 'install_app' "${line}" "${APPNAME}"
+    done < <(run_script 'yml_get' "${APPNAME}" "services.${FILENAME}.labels[com.appstarter.appinstall].dependencies.${DETECTED_DISTRO}" | awk '{ gsub("- ", ""); print}' || true)
 
     if [[ ${APPNAME} != "" ]]; then
         APP_PATH=$(run_script 'yml_get' "${APPNAME}" "services.${FILENAME}.labels[com.appstarter.appinstall].app_path" || true)
@@ -59,7 +62,7 @@ install_app() {
         cd "${SCRIPTPATH}" || fatal "Failed to change to ${SCRIPTPATH} directory."
 
         if [[ ${INSTALL_METHOD} == "package" || ${INSTALL_METHOD} == "package-manager" || ${INSTALL_METHOD} == "package manager" || ${INSTALL_METHOD} == "pm" ]]; then
-            if run_script 'package_manager_run' "install" "${APPNAME}"; then
+            if run_script 'package_manager_run' "install" "${APPNAME}" "${APPDEPENDENCYOF}"; then
                 RUN_POST_INSTALL=1
             fi
         elif [[ ${INSTALL_METHOD} == "built-in" || ${INSTALL_METHOD} == "custom" || ${INSTALL_METHOD} == "" ]]; then
@@ -133,13 +136,13 @@ install_app() {
                                 rm "${APP_CONFIG_PATH}"
                             fi
                         fi
-                        info "APP_CONFIG_PATH=${APP_CONFIG_PATH}"
-                        info "CONFIG_PATH=${CONFIG_PATH}"
-                        info "CONFIG_PATH_EXISTS=${CONFIG_PATH_EXISTS}"
-                        info "CONFIG_PATH_IS_LINK=${CONFIG_PATH_IS_LINK}"
-                        info "NEW_CONFIG_PATH=${NEW_CONFIG_PATH}"
-                        info "NEW_CONFIG_PATH_EXISTS=${NEW_CONFIG_PATH_EXISTS}"
-                        info "CONFIG_PATHS_LINKED=${CONFIG_PATHS_LINKED}"
+                        debug "APP_CONFIG_PATH=${APP_CONFIG_PATH}"
+                        debug "CONFIG_PATH=${CONFIG_PATH}"
+                        debug "CONFIG_PATH_EXISTS=${CONFIG_PATH_EXISTS}"
+                        debug "CONFIG_PATH_IS_LINK=${CONFIG_PATH_IS_LINK}"
+                        debug "NEW_CONFIG_PATH=${NEW_CONFIG_PATH}"
+                        debug "NEW_CONFIG_PATH_EXISTS=${NEW_CONFIG_PATH_EXISTS}"
+                        debug "CONFIG_PATHS_LINKED=${CONFIG_PATHS_LINKED}"
 
                         if [[ ${CONFIG_PATH_EXISTS} != "true" && ${NEW_CONFIG_PATH_EXISTS} == "true" ]]; then
                             # Config already moved; need to link

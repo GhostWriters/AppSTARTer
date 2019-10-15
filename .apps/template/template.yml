@@ -14,10 +14,21 @@ services:
       com.appstarter.appinstall:
         # How to install the application: package, custom
         method: "package"
-        # APT package manager options
-        apt_name: ""
-        apt_repo: ""
-        apt_key: ""
+        # Package manager options. Available are apt, yum, dnf
+        apt:
+          # If the package isn't distro specific, use general.
+          # Overrides for a specific distro (and codename) are availabled, if needed.
+          # Distro name can be retrieved by running `lsb_release -si | awk '{print tolower($0)}'`
+          # Codename can be retrieved by running `lsb_release -sc | awk '{print tolower($0)}'`
+          general:
+            name: ""
+            repo: ""
+            key: ""
+          ubuntu:
+            trusty:
+              repo: "" #This will override the general repo setting for Ubuntu Trusty but use the name and key in general
+          debian:
+            repo: "" #This will override the general repo setting for any Debian system but use the same name and key in general
         # Application path information:
         # - true - will generate the path based on APP_NAME: /opt/APP_NAME
         # - '/path/to/app' - will use whatever is set here. Case matters.
@@ -36,4 +47,15 @@ services:
         # Dependencies to install. Note: circular dependencies are not detected and will cause issues...
         # Dependencies also need their own file to be referenced for install
         dependencies:
-          - "Mono"
+          # If the dependency isn't distro specific, use general.
+          # Overrides for a specific distro (and codename) are availabled, if needed.
+          # Distro name can be retrieved by running `lsb_release -si | awk '{print tolower($0)}'`
+          # Codename can be retrieved by running `lsb_release -sc | awk '{print tolower($0)}'`
+          # General dependencies are always run and run first.
+          general:
+            - "Dependency for all distros"
+          ubuntu:
+            - "Dependency for anything running Ubuntu"
+          debian:
+            jessie:
+              - "Dependency specifically for Debian Jessie"

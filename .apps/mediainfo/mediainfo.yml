@@ -6,4 +6,6 @@ services:
       com.appstarter.appinfo.nolist: true
       com.appstarter.appinstall:
         method: "package"
-        apt_name: "mediainfo"
+        apt:
+          general:
+            name: "mediainfo"

@@ -13,5 +13,6 @@ services:
           - "config.ini"
           - "mylar.db"
         dependencies:
-          - "Python"
-          - "Python-cherrypy"
+          general:
+            - "Python"
+            - "Python-cherrypy"
