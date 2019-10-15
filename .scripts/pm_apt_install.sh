@@ -73,7 +73,7 @@ pm_apt_install() {
 
         PACKAGE_VERSION_INSTALLED=$(sudo apt-cache policy "${APP_PACKAGE}" | grep "Installed:" | awk '{gsub("Installed:", ""); gsub(" ", ""); print}')
         PACKAGE_VERSION_CANDIDATE=$(sudo apt-cache policy "${APP_PACKAGE}" | grep "Candidate:" | awk '{gsub("Candidate:", ""); gsub(" ", ""); print}')
-        if [[ ${PACKAGE_VERSION_INSTALLED} == "" || ${PACKAGE_VERSION_INSTALLED} != ${PACKAGE_VERSION_CANDIDATE} ]]; then
+        if [[ ${PACKAGE_VERSION_INSTALLED} == "" || ${PACKAGE_VERSION_INSTALLED} != "${PACKAGE_VERSION_CANDIDATE}" ]]; then
             if [[ ${APPDEPENDENCYOF} == "" ]]; then
                 notice "Installing or updating ${APPNAME} via apt"
             else
