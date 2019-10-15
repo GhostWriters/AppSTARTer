@@ -25,7 +25,7 @@ pm_apt_install() {
                 local SOURCE_EXISTS
                 SOURCE_EXISTS=$(grep -c "${SOURCE_REPO}" "${SOURCE_FILE}" || echo "0")
                 local SOURCE_LINE_COUNT
-                SOURCE_LINE_COUNT=$(cat "${SOURCE_FILE}" | wc -l || echo "0")
+                SOURCE_LINE_COUNT=$(wc -l "${SOURCE_FILE}" | awk '{print $1}' || echo "0")
                 if [[ ${SOURCE_EXISTS} = 1 || ${SOURCE_LINE_COUNT} -gt 1 ]]; then
                     info "Adding/updating sources for ${APPNAME}"
                     if [[ -f ${SOURCE_FILE} ]]; then
