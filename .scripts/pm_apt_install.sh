@@ -56,7 +56,7 @@ pm_apt_install() {
         if [[ ${SOURCE_KEY} != "" ]]; then
             if [[ ${SOURCE_KEY} == http* ]]; then
                 info "Adding/updating source key for ${APPNAME}"
-                wget -qO - "${SOURCE_KEY}" | apt-key add -  > /dev/null 2>&1 || error "Unable to add key for ${APPNAME}: ${SOURCE_KEY}"
+                wget -qO - "${SOURCE_KEY}" | apt-key add - > /dev/null 2>&1 || error "Unable to add key for ${APPNAME}: ${SOURCE_KEY}"
                 UPDATE_APT="true"
             else
                 if ! gpg --list-keys "${SOURCE_KEY}" > /dev/null 2>&1; then

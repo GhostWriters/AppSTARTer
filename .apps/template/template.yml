@@ -3,13 +3,13 @@ services:
   {APP_NAME}:
     labels:
       # Application info for display purposes
-      com.appstarter.appinfo.description: "" # Optional, but will show missing description message in some places.
-      com.appstarter.appinfo.nicename: "" # Required
-      com.appstarter.appinfo.nolist: true # Don't list as an installable application. Used for dependencies.
+      com.appstarter.appinfo.description: ""  # Optional, but will show missing description message in some places.
+      com.appstarter.appinfo.nicename: ""  # Required
+      com.appstarter.appinfo.nolist: true  # Don't list as an installable application. Used for dependencies.
       # Default application variables for setting through the script
       com.appstarter.appvars.{APP_NAME}_backup_config: "true"
       com.appstarter.appvars.{APP_NAME}_enabled: "false"
-      com.appstarter.appvars.{APP_NAME}_port_{APP_PORT}: "{APP_PORT}" # Multiple ports supported as seperate entries
+      com.appstarter.appvars.{APP_NAME}_port_{APP_PORT}: "{APP_PORT}"  # Multiple ports supported as seperate entries
       # Application install information
       com.appstarter.appinstall:
         # How to install the application: package, custom
@@ -26,9 +26,9 @@ services:
             key: ""
           ubuntu:
             trusty:
-              repo: "" #This will override the general repo setting for Ubuntu Trusty but use the name and key in general
+              repo: ""  # This will override the general repo setting for Ubuntu Trusty but use the name and key in general
           debian:
-            repo: "" #This will override the general repo setting for any Debian system but use the same name and key in general
+            repo: ""  # This will override the general repo setting for any Debian system but use the same name and key in general
         # Application path information:
         # - true - will generate the path based on APP_NAME: /opt/APP_NAME
         # - '/path/to/app' - will use whatever is set here. Case matters.
