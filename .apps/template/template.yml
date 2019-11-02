@@ -12,8 +12,30 @@ services:
       com.appstarter.appvars.{APP_NAME}_port_{APP_PORT}: "{APP_PORT}"  # Multiple ports supported as seperate entries
       # Application install information
       com.appstarter.appinstall:
-        # How to install the application: package, custom
-        method: "package"
+        config:
+          # If the configuration isn't distro specific, use general.
+          # Overrides for a specific distro (and codename) are availabled, if needed.
+          # Distro name can be retrieved by running `lsb_release -si | awk '{print tolower($0)}'`
+          # Codename can be retrieved by running `lsb_release -sc | awk '{print tolower($0)}'`
+          # General dependencies are always run and run first.
+          general:
+            # How to install the application: package, custom
+            method: "package"
+            # Application path information:
+            # - true - will generate the path based on APP_NAME: /opt/APP_NAME
+            # - '/path/to/app' - will use whatever is set here. Case matters.
+            # blank or empty "" - will do nothing; everything using APP_PATH will be skipped.
+            app_path: ""
+            # Application config location
+            # - Start with / for an absolute path otherwise it will be relative to the app_path
+            #   config_path: "data" => /opt/APP_NAME/data
+            #   config_path: "/path/to/config/data" => /path/to/config/data
+            # - If there are multiple directories or the config files aren't in a folder,
+            #   use this method to list the config files that need to be linked.
+            #   config_path:
+            #   - "data"
+            #   - "/path/to/config/file.config"
+            config_path: ""
         # Package manager options. Available are apt, yum, dnf
         apt:
           # If the package isn't distro specific, use general.
@@ -29,21 +51,6 @@ services:
               repo: ""  # This will override the general repo setting for Ubuntu Trusty but use the name and key in general
           debian:
             repo: ""  # This will override the general repo setting for any Debian system but use the same name and key in general
-        # Application path information:
-        # - true - will generate the path based on APP_NAME: /opt/APP_NAME
-        # - '/path/to/app' - will use whatever is set here. Case matters.
-        # blank or empty "" - will do nothing; everything using APP_PATH will be skipped.
-        app_path: ""
-        # Application config location
-        # - Start with / for an absolute path otherwise it will be relative to the app_path
-        #   config_path: "data" => /opt/APP_NAME/data
-        #   config_path: "/path/to/config/data" => /path/to/config/data
-        # - If there are multiple directories or the config files aren't in a folder,
-        #   use this method to list the config files that need to be linked.
-        #   config_path:
-        #   - "data"
-        #   - "/path/to/config/file.config"
-        config_path: ""
         # Dependencies to install. Note: circular dependencies are not detected and will cause issues...
         # Dependencies also need their own file to be referenced for install
         dependencies:
