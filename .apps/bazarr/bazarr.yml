@@ -7,10 +7,16 @@ services:
       com.appstarter.appvars.bazarr_enabled: "false"
       com.appstarter.appvars.bazarr_port_6767: "6767"
       com.appstarter.appinstall:
-        method: "built-in"
-        app_path: true
-        config_path: "data"
+        config:
+          general:
+            method: "built-in"
+            app_path: true
+            config_path: "data"
         dependencies:
-          - "Python"
-          - "python-pip"
-          - "libxslt-dev"
+          general:
+            - "Python"
+            - "python-pip"
+          raspbian:
+            - "libxslt-dev"
+          debian:
+            - "libxslt-dev"

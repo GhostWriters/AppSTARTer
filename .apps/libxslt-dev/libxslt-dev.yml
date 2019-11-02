@@ -5,5 +5,9 @@ services:
       com.appstarter.appinfo.nicename: "libxslt-dev"
       com.appstarter.appinfo.nolist: true
       com.appstarter.appinstall:
-        method: "package"
-        apt_name: "libxslt-dev"
+        config:
+          general:
+            method: "package"
+        apt:
+          general:
+            name: "libxslt-dev"

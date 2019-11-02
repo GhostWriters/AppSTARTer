@@ -9,7 +9,11 @@ services:
       com.appstarter.appvars.qbittorrent_port_6881: "6881"
       com.appstarter.appvars.qbittorrent_port_8080: "8080"
       com.appstarter.appinstall:
-        method: "package"
-        app_path: false
-        ppa: "qbittorrent-team/qbittorrent-stable"
-        apt_name: "qbittorrent-nox"
+        config:
+          general:
+            method: "package"
+            app_path: false
+        apt:
+          general:
+            name: "qbittorrent-nox"
+            repo: "ppa:qbittorrent-team/qbittorrent-stable"

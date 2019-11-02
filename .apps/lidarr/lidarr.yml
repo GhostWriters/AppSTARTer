@@ -7,8 +7,11 @@ services:
       com.appstarter.appvars.lidarr_enabled: "false"
       com.appstarter.appvars.lidarr_port_8686: "8686"
       com.appstarter.appinstall:
-        method: "built-in"
-        app_path: true
-        config_path: "/home/lidarr/.config/Lidarr"
+        config:
+          general:
+            method: "built-in"
+            app_path: true
+            config_path: "/home/lidarr/.config/Lidarr"
         dependencies:
-          - "Mono"
+          general:
+            - "Mono"

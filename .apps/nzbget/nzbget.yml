@@ -7,7 +7,9 @@ services:
       com.appstarter.appvars.nzbget_enabled: "false"
       com.appstarter.appvars.nzbget_port_6789: "6789"
       com.appstarter.appinstall:
-        method: "built-in"
-        config_path:
-          - "nzbget.conf"
-        app_path: true
+        config:
+          general:
+            method: "built-in"
+            config_path:
+              - "nzbget.conf"
+            app_path: true

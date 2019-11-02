@@ -5,5 +5,9 @@ services:
       com.appstarter.appinfo.nicename: "python-cherrypy"
       com.appstarter.appinfo.nolist: true
       com.appstarter.appinstall:
-        method: "package"
-        apt_name: "python-cherrypy"
+        config:
+          general:
+            method: "package"
+        apt:
+          general:
+            name: "python-cherrypy"

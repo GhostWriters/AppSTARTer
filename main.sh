@@ -143,6 +143,13 @@ readonly DETECTED_PGID=$(id -g "${DETECTED_PUID}" 2> /dev/null || true)
 readonly DETECTED_UGROUP=$(id -gn "${DETECTED_PUID}" 2> /dev/null || true)
 readonly DETECTED_HOMEDIR=$(eval echo "~${DETECTED_UNAME}" 2> /dev/null || true)
 readonly DETECTED_APPDIR="${DETECTED_HOMEDIR}/.${APPLICATION_NAME_CLEAN}"
+# System Information
+# shellcheck disable=SC2034
+readonly DETECTED_DISTRO=$(lsb_release -si | awk '{print tolower($0)}' || true)
+# shellcheck disable=SC2034
+readonly DETECTED_RELEASE=$(lsb_release -sr | awk '{print tolower($0)}' || true)
+# shellcheck disable=SC2034
+readonly DETECTED_CODENAME=$(lsb_release -sc | awk '{print tolower($0)}' || true)
 
 # Terminal Colors
 if [[ ${CI:-} == true ]] || [[ -t 1 ]]; then

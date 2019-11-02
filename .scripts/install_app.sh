@@ -17,6 +17,7 @@ install_app() {
     APPCONFDIR=$(run_script 'env_get' APPCONFDIR)
     local APP_CONFDIR_PATH="${APPCONFDIR}/${APPNAME,,}"
     local APP_CONFIG_PATH
+    local YMLAPPINSTALL="services.${FILENAME}.labels[com.appstarter.appinstall]"
 
     if [[ ${APPDEPENDENCYOF} == "" ]]; then
         notice "Installing ${APPNAME}"
@@ -27,11 +28,23 @@ install_app() {
     # Dependencies
     while IFS= read -r line; do
         run_script 'install_app' "${line}" "${APPNAME}"
-    done < <(run_script 'yml_get' "${APPNAME}" "services.${FILENAME}.labels[com.appstarter.appinstall].dependencies" | awk '{ gsub("- ", ""); print}' || true)
+    done < <(run_script 'yml_get' "${APPNAME}" "${YMLAPPINSTALL}.dependencies.general" | awk '{ gsub("- ", ""); print}' || true)
+    while IFS= read -r line; do
+        run_script 'install_app' "${line}" "${APPNAME}"
+    done < <(run_script 'yml_get' "${APPNAME}" "${YMLAPPINSTALL}.dependencies.${DETECTED_DISTRO}" | awk '{ gsub("- ", ""); print}' || true)
 
     if [[ ${APPNAME} != "" ]]; then
-        APP_PATH=$(run_script 'yml_get' "${APPNAME}" "services.${FILENAME}.labels[com.appstarter.appinstall].app_path" || true)
-        debug "APP_PATH for ${APPNAME}: '${APP_PATH}' from 'services.${FILENAME}.labels[com.appstarter.appinstall].app_path'"
+        APP_PATH=$(run_script 'yml_get' "${APPNAME}" "${YMLAPPINSTALL}.config.${DETECTED_DISTRO}.${DETECTED_CODENAME}.app_path" || true)
+        debug "APP_PATH for ${APPNAME}: '${APP_PATH}' from '${YMLAPPINSTALL}.config.${DETECTED_DISTRO}.${DETECTED_CODENAME}.app_path'"
+        if [[ ${APP_PATH} == "" ]]; then
+            APP_PATH=$(run_script 'yml_get' "${APPNAME}" "${YMLAPPINSTALL}.config.${DETECTED_DISTRO}.app_path" || true)
+            debug "APP_PATH for ${APPNAME}: '${APP_PATH}' from '${YMLAPPINSTALL}.config.${DETECTED_DISTRO}.app_path'"
+        fi
+        if [[ ${APP_PATH} == "" ]]; then
+            APP_PATH=$(run_script 'yml_get' "${APPNAME}" "${YMLAPPINSTALL}.config.general.app_path" || true)
+            debug "APP_PATH for ${APPNAME}: '${APP_PATH}' from '${YMLAPPINSTALL}.config.general.app_path'"
+        fi
+
         if [[ ${APP_PATH} == "true" ]]; then
             APP_PATH="/opt/${APPNAME}"
         elif [[ ${APP_PATH} != "false" ]]; then
@@ -39,8 +52,16 @@ install_app() {
         fi
 
         local INSTALL_METHOD
-        INSTALL_METHOD=$(run_script 'yml_get' "${APPNAME}" "services.${FILENAME}.labels[com.appstarter.appinstall].method" || true)
-        info "INSTALL_METHOD=${INSTALL_METHOD}"
+        INSTALL_METHOD=$(run_script 'yml_get' "${APPNAME}" "${YMLAPPINSTALL}.config.${DETECTED_DISTRO}.${DETECTED_CODENAME}.method" || true)
+        debug "INSTALL_METHOD for ${APPNAME}: '${APP_PATH}' from '${YMLAPPINSTALL}.config.${DETECTED_DISTRO}.${DETECTED_CODENAME}.method'"
+        if [[ ${INSTALL_METHOD} == "" ]]; then
+            INSTALL_METHOD=$(run_script 'yml_get' "${APPNAME}" "${YMLAPPINSTALL}.config.${DETECTED_DISTRO}.method" || true)
+            debug "INSTALL_METHOD for ${APPNAME}: '${APP_PATH}' from '${YMLAPPINSTALL}.config.${DETECTED_DISTRO}.method'"
+        fi
+        if [[ ${INSTALL_METHOD} == "" ]]; then
+            INSTALL_METHOD=$(run_script 'yml_get' "${APPNAME}" "${YMLAPPINSTALL}.config.general.method" || true)
+            debug "INSTALL_METHOD for ${APPNAME}: '${APP_PATH}' from '${YMLAPPINSTALL}.config.general.method'"
+        fi
 
         if [[ ${RUN_PRE_INSTALL} == 1 ]]; then
             if [[ ${APPDEPENDENCY} == 0 ]]; then
@@ -59,10 +80,10 @@ install_app() {
         cd "${SCRIPTPATH}" || fatal "Failed to change to ${SCRIPTPATH} directory."
 
         if [[ ${INSTALL_METHOD} == "package" || ${INSTALL_METHOD} == "package-manager" || ${INSTALL_METHOD} == "package manager" || ${INSTALL_METHOD} == "pm" ]]; then
-            if run_script 'package_manager_run' "install" "${APPNAME}"; then
+            if run_script 'package_manager_run' "install" "${APPNAME}" "${APPDEPENDENCYOF}"; then
                 RUN_POST_INSTALL=1
             fi
-        elif [[ ${INSTALL_METHOD} == "built-in" || ${INSTALL_METHOD} == "custom" || ${INSTALL_METHOD} == "" ]]; then
+        elif [[ ${INSTALL_METHOD} == "built-in" || ${INSTALL_METHOD} == "custom" ]]; then
             if [[ -f "${SCRIPTPATH}/.apps/${FILENAME}/${FILENAME}_install.sh" ]]; then
                 # shellcheck source=/dev/null
                 source "${SCRIPTPATH}/.apps/${FILENAME}/${FILENAME}_install.sh"
@@ -93,8 +114,17 @@ install_app() {
                     warn "Cannot set permissions in general post-install. No path provided for ${APPNAME}."
                 fi
                 # Config path handling
-                while IFS= read -r line; do
-                    local APP_CONFIG_PATH=${line}
+                local APPCONFIGPATHS
+                mapfile -t APPCONFIGPATHS < <(run_script 'yml_get' "${APPNAME}" "${YMLAPPINSTALL}.config.${DETECTED_DISTRO}.${DETECTED_CODENAME}.config_path" | awk '{ gsub("- ", ""); print}' || true)
+                if [[ ${#APPCONFIGPATHS[@]} -eq 0 ]]; then
+                    mapfile -t APPCONFIGPATHS < <(run_script 'yml_get' "${APPNAME}" "${YMLAPPINSTALL}.config.${DETECTED_DISTRO}.config_path" | awk '{ gsub("- ", ""); print}' || true)
+                fi
+                if [[ ${#APPCONFIGPATHS[@]} -eq 0 ]]; then
+                    mapfile -t APPCONFIGPATHS < <(run_script 'yml_get' "${APPNAME}" "${YMLAPPINSTALL}.config.general.config_path" | awk '{ gsub("- ", ""); print}' || true)
+                fi
+                #while IFS= read -r line; do
+                for APP_CONFIG_PATH in "${APPCONFIGPATHS[@]}"; do
+                    #local APP_CONFIG_PATH=${line}
                     local CONFIG_PATH="${APP_CONFIG_PATH}"
                     local CONFIG_PATH_EXISTS="false"
                     local CONFIG_PATH_IS_LINK="false"
@@ -133,13 +163,13 @@ install_app() {
                                 rm "${APP_CONFIG_PATH}"
                             fi
                         fi
-                        info "APP_CONFIG_PATH=${APP_CONFIG_PATH}"
-                        info "CONFIG_PATH=${CONFIG_PATH}"
-                        info "CONFIG_PATH_EXISTS=${CONFIG_PATH_EXISTS}"
-                        info "CONFIG_PATH_IS_LINK=${CONFIG_PATH_IS_LINK}"
-                        info "NEW_CONFIG_PATH=${NEW_CONFIG_PATH}"
-                        info "NEW_CONFIG_PATH_EXISTS=${NEW_CONFIG_PATH_EXISTS}"
-                        info "CONFIG_PATHS_LINKED=${CONFIG_PATHS_LINKED}"
+                        debug "APP_CONFIG_PATH=${APP_CONFIG_PATH}"
+                        debug "CONFIG_PATH=${CONFIG_PATH}"
+                        debug "CONFIG_PATH_EXISTS=${CONFIG_PATH_EXISTS}"
+                        debug "CONFIG_PATH_IS_LINK=${CONFIG_PATH_IS_LINK}"
+                        debug "NEW_CONFIG_PATH=${NEW_CONFIG_PATH}"
+                        debug "NEW_CONFIG_PATH_EXISTS=${NEW_CONFIG_PATH_EXISTS}"
+                        debug "CONFIG_PATHS_LINKED=${CONFIG_PATHS_LINKED}"
 
                         if [[ ${CONFIG_PATH_EXISTS} != "true" && ${NEW_CONFIG_PATH_EXISTS} == "true" ]]; then
                             # Config already moved; need to link
@@ -178,7 +208,8 @@ install_app() {
                     else
                         warn "Cannot move and link ${APPNAME} config. No config path provided."
                     fi
-                done < <(run_script 'yml_get' "${APPNAME}" "services.${FILENAME}.labels[com.appstarter.appinstall].config_path" | awk '{ gsub("- ", ""); print}' || true)
+                done
+                # done < <(echo $APPCONFIGPATH)
             fi
 
             if [[ -f "${SCRIPTPATH}/.apps/${FILENAME}/${FILENAME}_post_install.sh" ]]; then

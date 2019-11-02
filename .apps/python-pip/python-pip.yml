@@ -5,5 +5,9 @@ services:
       com.appstarter.appinfo.nicename: "python-pip"
       com.appstarter.appinfo.nolist: true
       com.appstarter.appinstall:
-        method: "package"
-        apt_name: "python-pip"
+        config:
+          general:
+            method: "package"
+        apt:
+          general:
+            name: "python-pip"

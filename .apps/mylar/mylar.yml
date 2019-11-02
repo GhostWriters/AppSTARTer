@@ -7,11 +7,14 @@ services:
       com.appstarter.appvars.mylar_enabled: "false"
       com.appstarter.appvars.mylar_port_8090: "8090"
       com.appstarter.appinstall:
-        method: "built-in"
-        app_path: true
-        config_path:
-          - "config.ini"
-          - "mylar.db"
+        config:
+          general:
+            method: "built-in"
+            app_path: true
+            config_path:
+              - "config.ini"
+              - "mylar.db"
         dependencies:
-          - "Python"
-          - "Python-cherrypy"
+          general:
+            - "Python"
+            - "Python-cherrypy"
