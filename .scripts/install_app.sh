@@ -115,12 +115,12 @@ install_app() {
                 fi
                 # Config path handling
                 local APPCONFIGPATHS
-                APPCONFIGPATHS=( $(run_script 'yml_get' "${APPNAME}" "${YMLAPPINSTALL}.config.${DETECTED_DISTRO}.${DETECTED_CODENAME}.config_path" | awk '{ gsub("- ", ""); print}' || true) )
+                mapfile -t APPCONFIGPATHS < <(run_script 'yml_get' "${APPNAME}" "${YMLAPPINSTALL}.config.${DETECTED_DISTRO}.${DETECTED_CODENAME}.config_path" | awk '{ gsub("- ", ""); print}' || true)
                 if [[ ${#APPCONFIGPATHS[@]} -eq 0 ]]; then
-                    APPCONFIGPATHS=( $(run_script 'yml_get' "${APPNAME}" "${YMLAPPINSTALL}.config.${DETECTED_DISTRO}.config_path" | awk '{ gsub("- ", ""); print}' || true) )
+                    mapfile -t APPCONFIGPATHS < <(run_script 'yml_get' "${APPNAME}" "${YMLAPPINSTALL}.config.${DETECTED_DISTRO}.config_path" | awk '{ gsub("- ", ""); print}' || true)
                 fi
                 if [[ ${#APPCONFIGPATHS[@]} -eq 0 ]]; then
-                    APPCONFIGPATHS=( $(run_script 'yml_get' "${APPNAME}" "${YMLAPPINSTALL}.config.general.config_path" | awk '{ gsub("- ", ""); print}' || true) )
+                    mapfile -t APPCONFIGPATHS < <(run_script 'yml_get' "${APPNAME}" "${YMLAPPINSTALL}.config.general.config_path" | awk '{ gsub("- ", ""); print}' || true)
                 fi
                 #while IFS= read -r line; do
                 for APP_CONFIG_PATH in "${APPCONFIGPATHS[@]}"; do
