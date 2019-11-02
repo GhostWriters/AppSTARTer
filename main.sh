@@ -25,6 +25,8 @@ readonly APPLICATION_NAME_CLEAN="${APPLICATION_NAME_TMP}"
 #/      install/update all dependencies
 #/  -t --test <test_name>
 #/      run tests to check the program
+#/  --uninstall=<app_name>
+#/      uninstall specified app
 #/  -u --update
 #/      update to the latest stable commits
 #/  -u --update <branch>
@@ -56,6 +58,14 @@ cmdline() {
             --install) LOCAL_ARGS="${LOCAL_ARGS:-}-i " ;;
             --test) LOCAL_ARGS="${LOCAL_ARGS:-}-t " ;;
             --update) LOCAL_ARGS="${LOCAL_ARGS:-}-u " ;;
+            --uninstall*)
+                readonly UNAPPNAME=${ARG#*=}
+                if [[ ${UNAPPNAME:-} == "" ]]; then
+                    readonly UNINSTALL=true
+                else
+                    readonly UNINSTALL="${UNAPPNAME}"
+                fi
+                ;;
             --verbose) LOCAL_ARGS="${LOCAL_ARGS:-}-v " ;;
             #pass through anything else
             *)
@@ -374,6 +384,14 @@ main() {
             run_script 'update_self'
         else
             run_script 'update_self' "${UPDATE}"
+        fi
+        exit
+    fi
+    if [[ -n ${UNINSTALL:-} ]]; then
+        if [[ ${UNINSTALL} == true ]]; then
+            debug "Uninstall"
+        else
+            run_script 'uninstall_app' "${UNINSTALL}"
         fi
         exit
     fi

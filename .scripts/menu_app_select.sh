@@ -57,9 +57,28 @@ menu_app_select() {
         info "Enabling selected apps."
         while IFS= read -r line; do
             local APPNAME=${line^^}
-            run_script 'appvars_create' "${APPNAME}"
-            run_script 'env_set' "${APPNAME}_ENABLED" true
+            if [[ ${APPNAME} != "" ]]; then
+                run_script 'appvars_create' "${APPNAME}"
+                run_script 'env_set' "${APPNAME}_ENABLED" true
+            fi
         done < <(echo "${SELECTEDAPPS}")
+
+        if grep -q '_ENABLED=false$' "${SCRIPTPATH}/.data/.env"; then
+            local PREPROMPT=${PROMPT:-}
+            if [[ ${CI:-} != true ]] && [[ ${PROMPT:-} != "GUI" ]]; then
+                PROMPT="CLI"
+            fi
+            if [[ ${CI:-} != true ]] && run_script 'question_prompt' "${PROMPT:-}" N "Would you like to uninstall all disabled apps?"; then
+                info "Unistalling disabled apps."
+                while IFS= read -r line; do
+                    local APPNAME=${line%%_ENABLED=false}
+                    run_script 'uninstall_app' "${APPNAME}"
+                done < <(grep '_ENABLED=false$' < "${SCRIPTPATH}/.data/.env")
+            fi
+            PROMPT=${PREPROMPT:-}
+        else
+            notice "${SCRIPTPATH}/.data/.env does not contain any disabled apps."
+        fi
 
         run_script 'appvars_purge_all'
         run_script 'env_update'
