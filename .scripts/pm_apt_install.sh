@@ -12,12 +12,13 @@ pm_apt_install() {
     if [[ ${APPNAME} != "" ]]; then
         local UPDATE_APT
         local SOURCE_REPO
-        SOURCE_REPO=$(run_script 'yml_get' "${APPNAME}" "services.${FILENAME}.labels[com.appstarter.appinstall].apt.${DETECTED_DISTRO}.${DETECTED_CODENAME}.repo" || true)
+        local YMLAPPINSTALL="services.${FILENAME}.labels[com.appstarter.appinstall]"
+        SOURCE_REPO=$(run_script 'yml_get' "${APPNAME}" "${YMLAPPINSTALL}.apt.${DETECTED_DISTRO}.${DETECTED_CODENAME}.repo" || true)
         if [[ ${SOURCE_REPO} == "" ]]; then
-            SOURCE_REPO=$(run_script 'yml_get' "${APPNAME}" "services.${FILENAME}.labels[com.appstarter.appinstall].apt.${DETECTED_DISTRO}.repo" || true)
+            SOURCE_REPO=$(run_script 'yml_get' "${APPNAME}" "${YMLAPPINSTALL}.apt.${DETECTED_DISTRO}.repo" || true)
         fi
         if [[ ${SOURCE_REPO} == "" ]]; then
-            SOURCE_REPO=$(run_script 'yml_get' "${APPNAME}" "services.${FILENAME}.labels[com.appstarter.appinstall].apt.general.repo" || true)
+            SOURCE_REPO=$(run_script 'yml_get' "${APPNAME}" "${YMLAPPINSTALL}.apt.general.repo" || true)
         fi
         if [[ ${SOURCE_REPO} != "" ]]; then
             if [[ ${SOURCE_REPO} == deb* ]]; then
@@ -46,12 +47,12 @@ pm_apt_install() {
         fi
 
         local SOURCE_KEY
-        SOURCE_KEY=$(run_script 'yml_get' "${APPNAME}" "services.${FILENAME}.labels[com.appstarter.appinstall].apt.${DETECTED_DISTRO}.${DETECTED_CODENAME}.key" || true)
+        SOURCE_KEY=$(run_script 'yml_get' "${APPNAME}" "${YMLAPPINSTALL}.apt.${DETECTED_DISTRO}.${DETECTED_CODENAME}.key" || true)
         if [[ ${SOURCE_KEY} == "" ]]; then
-            SOURCE_KEY=$(run_script 'yml_get' "${APPNAME}" "services.${FILENAME}.labels[com.appstarter.appinstall].apt.${DETECTED_DISTRO}.key" || true)
+            SOURCE_KEY=$(run_script 'yml_get' "${APPNAME}" "${YMLAPPINSTALL}.apt.${DETECTED_DISTRO}.key" || true)
         fi
         if [[ ${SOURCE_KEY} == "" ]]; then
-            SOURCE_KEY=$(run_script 'yml_get' "${APPNAME}" "services.${FILENAME}.labels[com.appstarter.appinstall].apt.general.key" || true)
+            SOURCE_KEY=$(run_script 'yml_get' "${APPNAME}" "${YMLAPPINSTALL}.apt.general.key" || true)
         fi
         if [[ ${SOURCE_KEY} != "" ]]; then
             if [[ ${SOURCE_KEY} == http* ]]; then
@@ -81,9 +82,12 @@ pm_apt_install() {
             fi
 
             local APP_PACKAGE
-            APP_PACKAGE=$(run_script 'yml_get' "${APPNAME}" "services.${FILENAME}.labels[com.appstarter.appinstall].apt.${DETECTED_DISTRO}.name" || true)
+            APP_PACKAGE=$(run_script 'yml_get' "${APPNAME}" "${YMLAPPINSTALL}.apt.${DETECTED_DISTRO}.${DETECTED_CODENAME}.name" || true)
             if [[ ${APP_PACKAGE} == "" ]]; then
-                APP_PACKAGE=$(run_script 'yml_get' "${APPNAME}" "services.${FILENAME}.labels[com.appstarter.appinstall].apt.general.name" || true)
+                APP_PACKAGE=$(run_script 'yml_get' "${APPNAME}" "${YMLAPPINSTALL}.apt.${DETECTED_DISTRO}..name" || true)
+            fi
+            if [[ ${APP_PACKAGE} == "" ]]; then
+                APP_PACKAGE=$(run_script 'yml_get' "${APPNAME}" "${YMLAPPINSTALL}.apt.general.name" || true)
             fi
 
             apt-get -y install "${APP_PACKAGE}" > /dev/null 2>&1 || error "Failed to install/update ${APPNAME} from apt."
