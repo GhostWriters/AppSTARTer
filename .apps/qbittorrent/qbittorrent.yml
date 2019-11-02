@@ -9,8 +9,10 @@ services:
       com.appstarter.appvars.qbittorrent_port_6881: "6881"
       com.appstarter.appvars.qbittorrent_port_8080: "8080"
       com.appstarter.appinstall:
-        method: "package"
-        app_path: false
+        config:
+          general:
+            method: "package"
+            app_path: false
         apt:
           general:
             name: "qbittorrent-nox"

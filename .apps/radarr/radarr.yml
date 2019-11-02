@@ -7,9 +7,11 @@ services:
       com.appstarter.appvars.radarr_enabled: "false"
       com.appstarter.appvars.radarr_port_7878: "7878"
       com.appstarter.appinstall:
-        method: "built-in"
-        app_path: "/opt/Radarr/"
-        config_path: "/home/radarr/.config/Radarr"
+        config:
+          general:
+            method: "built-in"
+            app_path: "/opt/Radarr/"
+            config_path: "/home/radarr/.config/Radarr"
         dependencies:
           general:
             - "Mono"

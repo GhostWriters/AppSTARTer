@@ -7,9 +7,11 @@ services:
       com.appstarter.appvars.sonarr_enabled: "false"
       com.appstarter.appvars.sonarr_port_8989: "8989"
       com.appstarter.appinstall:
-        method: "package"
-        app_path: "/opt/NzbDrone"
-        config_path: "/home/sonarr/.config/NzbDrone"
+        config:
+          general:
+            method: "package"
+            app_path: "/opt/NzbDrone"
+            config_path: "/home/sonarr/.config/NzbDrone"
         apt:
           general:
             name: "nzbdrone"
