@@ -5,10 +5,6 @@ IFS=$'\n\t'
 pm_apt_uninstall() {
     local APPNAME=${1:-}
     local APPDEPENDENCYOF=${2:-}
-    local REDIRECT="> /dev/null 2>&1"
-    if [[ ${CI:-} == true ]]; then
-        REDIRECT="> /dev/null"
-    fi
     if [[ ${APPNAME} != "" ]]; then
         local UPDATE_APT
         local SOURCE_REPO
@@ -52,7 +48,6 @@ pm_apt_uninstall() {
                 elif [[ ${SOURCE_REPO} == ppa:* ]]; then
                     info "Removing sources for ${APPNAME}"
                     add-apt-repository -y --remove "${SOURCE_REPO}" > /dev/null
-                    UPDATE_APT="true"
                 else
                     error "Source Repo is an invalid format. Must start be 'deb' or 'ppa:'!"
                     error "${SOURCE_REPO}"
