@@ -6,7 +6,6 @@ pm_apt_uninstall() {
     local APPNAME=${1:-}
     local APPDEPENDENCYOF=${2:-}
     if [[ ${APPNAME} != "" ]]; then
-        local UPDATE_APT
         local SOURCE_REPO
         local YMLAPPINSTALL="services.${FILENAME}.labels[com.appstarter.appinstall]"
 
