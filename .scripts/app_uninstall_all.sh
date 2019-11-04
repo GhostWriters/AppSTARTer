@@ -19,7 +19,7 @@ app_uninstall_all() {
         fi
         PROMPT=${PREPROMPT:-}
     else
-        notice "${SCRIPTPATH}/.data/.env does not contain any${APPS_UNINSTALL} apps to uninstall."
+        notice "${SCRIPTPATH}/.data/.env does not contain any apps to uninstall."
     fi
 }
 
