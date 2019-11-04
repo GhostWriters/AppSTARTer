@@ -5,6 +5,7 @@ services:
       com.appstarter.appinfo.nicename: "Lidarr"
       com.appstarter.appvars.lidarr_backup_config: "true"
       com.appstarter.appvars.lidarr_enabled: "false"
+      com.appstarter.appvars.lidarr_installed: "false"
       com.appstarter.appvars.lidarr_port_8686: "8686"
       com.appstarter.appinstall:
         config:

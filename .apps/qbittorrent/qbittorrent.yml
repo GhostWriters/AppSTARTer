@@ -5,6 +5,7 @@ services:
       com.appstarter.appinfo.nicename: "qBittorrent"
       com.appstarter.appvars.qbittorrent_backup_config: "true"
       com.appstarter.appvars.qbittorrent_enabled: "false"
+      com.appstarter.appvars.qbittorrent_installed: "false"
       com.appstarter.appvars.qbittorrent_port_51413: "51413"
       com.appstarter.appvars.qbittorrent_port_6881: "6881"
       com.appstarter.appvars.qbittorrent_port_8080: "8080"
@@ -13,6 +14,7 @@ services:
           general:
             method: "package"
             app_path: false
+            config_path: "/home/qbittorrent/.config/"
         apt:
           general:
             name: "qbittorrent-nox"

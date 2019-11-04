@@ -2,7 +2,7 @@
 set -euo pipefail
 IFS=$'\n\t'
 
-install_app() {
+app_install() {
     local APPNAME="${1:-}"
     local APP_USER="${APPNAME,,}"
     local APPDEPENDENCYOF="${2:-}"
@@ -25,15 +25,17 @@ install_app() {
         info "Installing dependency of ${APPDEPENDENCYOF} - ${APPNAME}"
         APPDEPENDENCY=1
     fi
-    # Dependencies
-    while IFS= read -r line; do
-        run_script 'install_app' "${line}" "${APPNAME}"
-    done < <(run_script 'yml_get' "${APPNAME}" "${YMLAPPINSTALL}.dependencies.general" | awk '{ gsub("- ", ""); print}' || true)
-    while IFS= read -r line; do
-        run_script 'install_app' "${line}" "${APPNAME}"
-    done < <(run_script 'yml_get' "${APPNAME}" "${YMLAPPINSTALL}.dependencies.${DETECTED_DISTRO}" | awk '{ gsub("- ", ""); print}' || true)
 
     if [[ ${APPNAME} != "" ]]; then
+        # Dependencies
+        while IFS= read -r line; do
+            run_script 'app_install' "${line}" "${APPNAME}"
+        done < <(run_script 'yml_get' "${APPNAME}" "${YMLAPPINSTALL}.dependencies.general" | awk '{ gsub("- ", ""); print}' || true)
+        while IFS= read -r line; do
+            run_script 'app_install' "${line}" "${APPNAME}"
+        done < <(run_script 'yml_get' "${APPNAME}" "${YMLAPPINSTALL}.dependencies.${DETECTED_DISTRO}" | awk '{ gsub("- ", ""); print}' || true)
+
+        # Install information
         APP_PATH=$(run_script 'yml_get' "${APPNAME}" "${YMLAPPINSTALL}.config.${DETECTED_DISTRO}.${DETECTED_CODENAME}.app_path" || true)
         debug "APP_PATH for ${APPNAME}: '${APP_PATH}' from '${YMLAPPINSTALL}.config.${DETECTED_DISTRO}.${DETECTED_CODENAME}.app_path'"
         if [[ ${APP_PATH} == "" ]]; then
@@ -106,8 +108,11 @@ install_app() {
             if [[ ${APPDEPENDENCY} == 0 ]]; then
                 info "Running general post-install after successful ${APPNAME} install"
                 # Give the app time to create files; probably doesn't need to be 30s
-                info "Waiting 30 seconds for ${APPNAME} to initialize..."
-                sleep 30s
+                if ! grep -q "${APPNAME^^}_INSTALLED=true$" "${SCRIPTPATH}/.data/.env"; then
+                    info "Waiting 30 seconds for ${APPNAME} to initialize..."
+                    sleep 30s
+                    run_script 'env_set' "${APPNAME^^}_INSTALLED" true
+                fi
                 if [[ ${APP_PATH} != "" ]]; then
                     run_script 'set_permissions' "${APP_PATH}" "${APP_UID}" "${APP_GID}"
                 elif [[ ${APP_PATH} != "false" ]]; then
@@ -231,6 +236,6 @@ install_app() {
     fi
 }
 
-test_install_app() {
-    warn "CI does not test install_app."
+test_app_install() {
+    warn "CI does not test app_install."
 }
