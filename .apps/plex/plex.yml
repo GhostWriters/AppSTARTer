@@ -1,0 +1,35 @@
+services:
+  plex:
+    labels:
+      com.appstarter.appinfo.description: "Plex Media Server (Public releases) via Package Manager"
+      com.appstarter.appinfo.nicename: "Plex"
+      com.appstarter.appvars.plex_backup_config: "true"
+      com.appstarter.appvars.plex_enabled: "false"
+      com.appstarter.appvars.plex_installed: "false"
+      com.appstarter.appvars.plex_port_1900: "1900"
+      com.appstarter.appvars.plex_port_3005: "3005"
+      com.appstarter.appvars.plex_port_32400: "32400"
+      com.appstarter.appvars.plex_port_32410: "32410"
+      com.appstarter.appvars.plex_port_32412: "32412"
+      com.appstarter.appvars.plex_port_32413: "32413"
+      com.appstarter.appvars.plex_port_32414: "32414"
+      com.appstarter.appvars.plex_port_32469: "32469"
+      com.appstarter.appvars.plex_port_33400: "33400"
+      com.appstarter.appvars.plex_port_5353: "5353"
+      com.appstarter.appvars.plex_port_8324: "8324"
+      com.appstarter.appinstall:
+        config:
+          general:
+            method: "package"
+            app_path: ""
+            config_path: ""
+        apt:
+          general:
+            name: "plexmediaserver"
+            repo: "deb https://downloads.plex.tv/repo/deb public main"
+            key: "https://downloads.plex.tv/plex-keys/PlexSign.key"
+        yum:
+          general:
+            name: "plexmediaserver"
+            repo: "https://downloads.plex.tv/repo/rpm/$basearch/"
+            key: "https://downloads.plex.tv/plex-keys/PlexSign.key"
