@@ -60,7 +60,7 @@ cmdline() {
             --update) LOCAL_ARGS="${LOCAL_ARGS:-}-u " ;;
             --uninstall*)
                 readonly UNAPPNAME=${ARG#*=}
-                if [[ ${UNAPPNAME:-} == "" ]]; then
+                if [[ ${UNAPPNAME:-} == "--uninstall" || ${UNAPPNAME:-} == "all" || ${UNAPPNAME:-} == "" ]]; then
                     readonly UNINSTALL=true
                 else
                     readonly UNINSTALL="${UNAPPNAME}"
@@ -389,11 +389,11 @@ main() {
     fi
     if [[ -n ${UNINSTALL:-} ]]; then
         if [[ ${UNINSTALL} == true ]]; then
-            debug "Uninstall"
+            run_script 'app_uninstall_all'
         else
             APPNAME=${UNINSTALL,,}
             APPNICENAME=$(run_script 'yml_get' "${APPNAME}" "services.${APPNAME,,}.labels[com.appstarter.appinfo.nicename]" || echo "${APPNAME^}")
-            run_script 'uninstall_app' "${APPNICENAME^}"
+            run_script 'app_uninstall' "${APPNICENAME}"
         fi
         exit
     fi
