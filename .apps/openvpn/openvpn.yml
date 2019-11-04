@@ -1,0 +1,31 @@
+services:
+  openvpn:
+    labels:
+      com.appstarter.appinfo.description: ""
+      com.appstarter.appinfo.nicename: "OpenVPN"
+      com.appstarter.appvars.openvpn_backup_config: "true"
+      com.appstarter.appvars.openvpn_enabled: "false"
+      com.appstarter.appvars.openvpn_installed: "false"
+      com.appstarter.appinstall:
+        config:
+          general:
+            method: "package"
+            app_path: ""
+            config_path: ""
+        apt:
+          general:
+            name: "openvpn-as"
+            key: "https://as-repository.openvpn.net/as-repo-public.gpg"
+          ubuntu:
+            bionic:
+              repo: "deb http://as-repository.openvpn.net/as/debian bionic main"
+            xenial:
+              repo: "deb [arch=amd64] http://as-repository.openvpn.net/as/debian xenial main"
+          debian:
+              buster:
+                repo: "deb http://as-repository.openvpn.net/as/debian buster main"
+              stretch:
+                repo: "deb http://as-repository.openvpn.net/as/debian stretch main"
+              jessie:
+                repo: "deb http://as-repository.openvpn.net/as/debian jessie main"
+
