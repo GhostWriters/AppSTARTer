@@ -4,10 +4,10 @@ IFS=$'\n\t'
 
 app_uninstall() {
     local APPNAME="${1:-}"
-    local APP_USER="${APPNAME,,}"
+    # local APP_USER="${APPNAME,,}"
     local APPDEPENDENCYOF="${2:-}"
     local FILENAME=${APPNAME,,}
-    local APPDEPENDENCY=0
+    # local APPDEPENDENCY=0
     # local APP_UID
     # local APP_GID
     local APP_PATH
