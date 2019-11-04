@@ -14,11 +14,7 @@ app_uninstall_all() {
                 local APPNAME=${line%%_ENABLED=*}
                 APPNAME=${APPNAME,,}
                 APPNICENAME=$(run_script 'yml_get' "${APPNAME}" "services.${APPNAME,,}.labels[com.appstarter.appinfo.nicename]" || echo "${APPNAME^}")
-                if grep -q "${APPNAME^^}_INSTALLED=true$" "${SCRIPTPATH}/.data/.env"; then
-                    run_script 'app_uninstall' "${APPNICENAME}"
-                else
-                    info "${APPNICENAME} has already been uninstalled"
-                fi
+                run_script 'app_uninstall' "${APPNICENAME}"
             done < <(grep '_ENABLED=false$' < "${SCRIPTPATH}/.data/.env")
         fi
         PROMPT=${PREPROMPT:-}
