@@ -27,6 +27,6 @@ app_uninstall_all() {
     fi
 }
 
-test_app_uninstall() {
+test_app_uninstall_all() {
     warn "CI does not test app_uninstall."
 }
