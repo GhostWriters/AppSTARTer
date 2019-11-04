@@ -69,6 +69,8 @@ app_uninstall() {
                 debug "INSTALL_METHOD for ${APPNAME}: '${APP_PATH}' from '${YMLAPPINSTALL}.config.general.method'"
             fi
 
+            run_script 'remove_service' "${APPNAME}"
+
             if [[ ${INSTALL_METHOD} == "package" || ${INSTALL_METHOD} == "package-manager" || ${INSTALL_METHOD} == "package manager" || ${INSTALL_METHOD} == "pm" ]]; then
                 if run_script 'package_manager_run' "uninstall" "${APPNAME}" "${APPDEPENDENCYOF}"; then
                     RUN_POST_UNINSTALL=1
@@ -96,8 +98,6 @@ app_uninstall() {
             else
                 error "No install method for ${APPNAME} (needs this to know how to uninstall)"
             fi
-
-            run_script 'remove_service' "${APPNAME}"
 
             cd "${SCRIPTPATH}" || fatal "Failed to change to ${SCRIPTPATH} directory."
 
