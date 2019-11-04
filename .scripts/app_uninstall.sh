@@ -14,6 +14,7 @@ app_uninstall() {
     local YMLAPPINSTALL="services.${FILENAME}.labels[com.appstarter.appinstall]"
 
     if [[ ${APPNAME} != "" ]]; then
+        run_script 'appvars_create' "${APPNAME}"
         local PREPROMPT=${PROMPT:-}
         if [[ ${CI:-} != true ]] && [[ ${PROMPT:-} != "GUI" ]]; then
             PROMPT="CLI"
@@ -81,7 +82,7 @@ app_uninstall() {
                     info "Removing '${APP_PATH}'"
                     rm -r "${APP_PATH}" > /dev/null 2>&1 || error "Failed to remove '${APP_PATH}'."
                 else
-                    notice "${APPNAME} not installed"
+                    info "${APPNAME} not installed"
                 fi
             else
                 error "No install method for ${APPNAME} (needs this to know how to uninstall)"
