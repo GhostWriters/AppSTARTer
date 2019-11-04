@@ -7,16 +7,10 @@ app_uninstall() {
     local APP_USER="${APPNAME,,}"
     local APPDEPENDENCYOF="${2:-}"
     local FILENAME=${APPNAME,,}
-    local RUN_PRE_INSTALL=1
-    local RUN_POST_INSTALL=0
     local APPDEPENDENCY=0
-    local APP_UID
-    local APP_GID
+    # local APP_UID
+    # local APP_GID
     local APP_PATH
-    local APPCONFDIR
-    APPCONFDIR=$(run_script 'env_get' APPCONFDIR)
-    local APP_CONFDIR_PATH="${APPCONFDIR}/${APPNAME,,}"
-    local APP_CONFIG_PATH
     local YMLAPPINSTALL="services.${FILENAME}.labels[com.appstarter.appinstall]"
 
     if [[ ${APPNAME} != "" ]]; then
@@ -29,7 +23,7 @@ app_uninstall() {
                 notice "Uninstalling ${APPNAME}"
             else
                 info "Uninstalling dependency of ${APPDEPENDENCYOF} - ${APPNAME}"
-                APPDEPENDENCY=1
+                # APPDEPENDENCY=1
             fi
             # Dependencies
             # while IFS= read -r line; do
@@ -72,20 +66,14 @@ app_uninstall() {
             run_script 'remove_service' "${APPNAME}"
 
             if [[ ${INSTALL_METHOD} == "package" || ${INSTALL_METHOD} == "package-manager" || ${INSTALL_METHOD} == "package manager" || ${INSTALL_METHOD} == "pm" ]]; then
-                if run_script 'package_manager_run' "uninstall" "${APPNAME}" "${APPDEPENDENCYOF}"; then
-                    RUN_POST_UNINSTALL=1
-                fi
+                run_script 'package_manager_run' "uninstall" "${APPNAME}" "${APPDEPENDENCYOF}" || error "And error occurred running ${APPNAME} uninstall via package manager"
             elif [[ ${INSTALL_METHOD} == "built-in" || ${INSTALL_METHOD} == "custom" ]]; then
                 if [[ -f "${SCRIPTPATH}/.apps/${FILENAME}/${FILENAME}_uninstall.sh" ]]; then
                     # shellcheck source=/dev/null
                     source "${SCRIPTPATH}/.apps/${FILENAME}/${FILENAME}_uninstall.sh"
-                    if "${FILENAME}_uninstall" "${APPNAME}"; then
-                        RUN_POST_UNINSTALL=1
-                    fi
+                    "${FILENAME}_uninstall" "${APPNAME}" || error "And error occurred running ${APPNAME} uninstall file"
                 elif [[ -f "${SCRIPTPATH}/.scripts/uninstall_${FILENAME}.sh" ]]; then
-                    if run_script "uninstall_${FILENAME}" "${APPNAME}"; then
-                        RUN_POST_UNINSTALL=1
-                    fi
+                    run_script "uninstall_${FILENAME}" || error "And error occurred running ${APPNAME} uninstall file"
                 fi
                 cd "${SCRIPTPATH}" || fatal "Failed to change to ${SCRIPTPATH} directory."
 
