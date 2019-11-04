@@ -2,7 +2,7 @@
 set -euo pipefail
 IFS=$'\n\t'
 
-install_app() {
+app_install() {
     local APPNAME="${1:-}"
     local APP_USER="${APPNAME,,}"
     local APPDEPENDENCYOF="${2:-}"
@@ -29,10 +29,10 @@ install_app() {
     if [[ ${APPNAME} != "" ]]; then
         # Dependencies
         while IFS= read -r line; do
-            run_script 'install_app' "${line}" "${APPNAME}"
+            run_script 'app_install' "${line}" "${APPNAME}"
         done < <(run_script 'yml_get' "${APPNAME}" "${YMLAPPINSTALL}.dependencies.general" | awk '{ gsub("- ", ""); print}' || true)
         while IFS= read -r line; do
-            run_script 'install_app' "${line}" "${APPNAME}"
+            run_script 'app_install' "${line}" "${APPNAME}"
         done < <(run_script 'yml_get' "${APPNAME}" "${YMLAPPINSTALL}.dependencies.${DETECTED_DISTRO}" | awk '{ gsub("- ", ""); print}' || true)
 
         # Install information
@@ -105,6 +105,7 @@ install_app() {
         cd "${SCRIPTPATH}" || fatal "Failed to change to ${SCRIPTPATH} directory."
 
         if [[ ${RUN_POST_INSTALL} == 1 ]]; then
+            run_script 'env_set' "${APPNAME}_INSTALLED" true
             if [[ ${APPDEPENDENCY} == 0 ]]; then
                 info "Running general post-install after successful ${APPNAME} install"
                 # Give the app time to create files; probably doesn't need to be 30s
@@ -233,6 +234,6 @@ install_app() {
     fi
 }
 
-test_install_app() {
-    warn "CI does not test install_app."
+test_app_install() {
+    warn "CI does not test app_install."
 }

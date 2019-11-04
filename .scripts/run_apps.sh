@@ -7,7 +7,7 @@ run_apps() {
         local APPNAME=${line%%_ENABLED=true}
         APPNAME=${APPNAME,,}
         APPNICENAME=$(run_script 'yml_get' "${APPNAME}" "services.${APPNAME,,}.labels[com.appstarter.appinfo.nicename]" || echo "${APPNAME^}")
-        run_script "install_app" "${APPNICENAME}"
+        run_script "app_install" "${APPNICENAME}"
     done < <(grep '_ENABLED=true$' < "${SCRIPTPATH}/.data/.env")
 }
 
