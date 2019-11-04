@@ -88,14 +88,8 @@ app_uninstall() {
             fi
 
             cd "${SCRIPTPATH}" || fatal "Failed to change to ${SCRIPTPATH} directory."
-
-            if grep -q "${APPNAME^^}_ENABLED=true$" "${SCRIPTPATH}/.data/.env"; then
-                run_script 'env_set' "${APPNAME^^}_ENABLED" false
-            fi
-
-            if grep -q "${APPNAME^^}_INSTALLED=true$" "${SCRIPTPATH}/.data/.env"; then
-                run_script 'env_set' "${APPNAME}_INSTALLED" false
-            fi
+            run_script 'env_set' "${APPNAME^^}_ENABLED" false
+            run_script 'env_set' "${APPNAME^^}_INSTALLED" false
         else
             info "Not uninstalling ${APPNAME}."
         fi
