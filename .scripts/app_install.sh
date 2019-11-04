@@ -111,7 +111,7 @@ app_install() {
                 if ! grep -q "${APPNAME^^}_INSTALLED=true$" "${SCRIPTPATH}/.data/.env"; then
                     info "Waiting 30 seconds for ${APPNAME} to initialize..."
                     sleep 30s
-                    run_script 'env_set' "${APPNAME}_INSTALLED" true
+                    run_script 'env_set' "${APPNAME^^}_INSTALLED" true
                 fi
                 if [[ ${APP_PATH} != "" ]]; then
                     run_script 'set_permissions' "${APP_PATH}" "${APP_UID}" "${APP_GID}"

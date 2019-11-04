@@ -5,6 +5,7 @@ services:
       com.appstarter.appinfo.nicename: "Mylar"
       com.appstarter.appvars.mylar_backup_config: "true"
       com.appstarter.appvars.mylar_enabled: "false"
+      com.appstarter.appvars.mylar_installed: "false"
       com.appstarter.appvars.mylar_port_8090: "8090"
       com.appstarter.appinstall:
         config:

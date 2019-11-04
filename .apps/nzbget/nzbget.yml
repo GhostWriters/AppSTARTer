@@ -5,6 +5,7 @@ services:
       com.appstarter.appinfo.nicename: "NZBGet"
       com.appstarter.appvars.nzbget_backup_config: "true"
       com.appstarter.appvars.nzbget_enabled: "false"
+      com.appstarter.appvars.nzbget_installed: "false"
       com.appstarter.appvars.nzbget_port_6789: "6789"
       com.appstarter.appinstall:
         config:

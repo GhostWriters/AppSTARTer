@@ -9,6 +9,7 @@ services:
       # Default application variables for setting through the script
       com.appstarter.appvars.{APP_NAME}_backup_config: "true"
       com.appstarter.appvars.{APP_NAME}_enabled: "false"
+      com.appstarter.appvars.{APP_NAME}_installed: "false"
       com.appstarter.appvars.{APP_NAME}_port_{APP_PORT}: "{APP_PORT}"  # Multiple ports supported as seperate entries
       # Application install information
       com.appstarter.appinstall:

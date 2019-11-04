@@ -5,6 +5,7 @@ services:
       com.appstarter.appinfo.nicename: "Bazarr"
       com.appstarter.appvars.bazarr_backup_config: "true"
       com.appstarter.appvars.bazarr_enabled: "false"
+      com.appstarter.appvars.bazarr_installed: "false"
       com.appstarter.appvars.bazarr_port_6767: "6767"
       com.appstarter.appinstall:
         config:
