@@ -14,6 +14,7 @@ services:
           general:
             method: "package"
             app_path: false
+            config_path: "/home/qbittorrent/.config/"
         apt:
           general:
             name: "qbittorrent-nox"
