@@ -391,7 +391,9 @@ main() {
         if [[ ${UNINSTALL} == true ]]; then
             debug "Uninstall"
         else
-            run_script 'uninstall_app' "${UNINSTALL}"
+            APPNAME=${UNINSTALL,,}
+            APPNICENAME=$(run_script 'yml_get' "${APPNAME}" "services.${APPNAME,,}.labels[com.appstarter.appinfo.nicename]" || echo "${APPNAME^}")
+            run_script 'uninstall_app' "${APPNICENAME^}"
         fi
         exit
     fi
